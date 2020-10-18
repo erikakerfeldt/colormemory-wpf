@@ -1,0 +1,41 @@
+﻿<Window x:Class="ColorMemory.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ColorMemory"
+        mc:Ignorable="d"
+        Title="Color Memory" Height="350" Width="525" Icon="Images/logo.png">
+
+    <Window.Resources>
+        <ImageBrush x:Key="backside" ImageSource="Images/backside.png"/>
+        <BooleanToVisibilityConverter x:Key="visConv"/>
+    </Window.Resources>
+
+    <DockPanel>
+
+        <DockPanel DockPanel.Dock="Top">
+            <Image Source="Images/logo.png" DockPanel.Dock="Left" Height="60"/>
+            <TextBlock>
+                Elapsed time <Run Text="{Binding ElapsedTime, StringFormat=m\\:ss, Mode=OneWay}" FontWeight="Bold"/>. Your current score is <Run Text="{Binding Score, Mode=OneWay}" FontWeight="Bold"/> points.
+            </TextBlock>
+        </DockPanel>
+
+        <ItemsControl ItemsSource="{Binding Cards}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="4" Columns="4"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding Path=DataContext.FlipCommand.Command, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Visibility="{Binding IsVisible, Converter={StaticResource visConv}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                        <TextBlock Background="{Binding Background, TargetNullValue={StaticResource backside}}"/>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </DockPanel>
+
+</Window>
